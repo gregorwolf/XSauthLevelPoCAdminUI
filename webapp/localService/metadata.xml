@@ -1,0 +1,54 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" Version="1.0">
+    <edmx:DataServices
+        xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+        <Schema
+            xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices"
+            xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="de.linuxdozent.gittest.odata.service">
+            <EntityType Name="BooksType">
+                <Key>
+                    <PropertyRef Name="ISBN"/>
+                </Key>
+                <Property Name="ISBN" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="Author" Type="Edm.String" MaxLength="100"/>
+                <Property Name="BookTitle" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Publisher" Type="Edm.String" MaxLength="100"/>
+            </EntityType>
+            <EntityType Name="DiscountCodeType">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="UserName" Type="Edm.String" MaxLength="256"/>
+                <Property Name="DiscountValue" Type="Edm.Int32"/>
+                <Property Name="SHA256HASH" Type="Edm.Binary"/>
+                <Property Name="Redeemed" Type="Edm.String" DefaultValue="N" MaxLength="1"/>
+            </EntityType>
+            <EntityType Name="CustomerType">
+                <Key>
+                    <PropertyRef Name="UserName"/>
+                </Key>
+                <Property Name="UserName" Type="Edm.String" Nullable="false" MaxLength="256"/>
+                <Property Name="FirstName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="LastName" Type="Edm.String" MaxLength="100"/>
+                <Property Name="EMail" Type="Edm.String" MaxLength="256"/>
+            </EntityType>
+            <EntityType Name="OrdersType">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="Customer" Type="Edm.String" MaxLength="256"/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="3"/>
+                <Property Name="RequestedDeliveryDate" Type="Edm.DateTime"/>
+            </EntityType>
+            <EntityContainer Name="service" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Books" EntityType="de.linuxdozent.gittest.odata.service.BooksType"/>
+                <EntitySet Name="DiscountCode" EntityType="de.linuxdozent.gittest.odata.service.DiscountCodeType"/>
+                <EntitySet Name="Customer" EntityType="de.linuxdozent.gittest.odata.service.CustomerType"/>
+                <EntitySet Name="Orders" EntityType="de.linuxdozent.gittest.odata.service.OrdersType"/>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

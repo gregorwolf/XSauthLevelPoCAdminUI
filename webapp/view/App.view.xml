@@ -1,0 +1,32 @@
+<mvc:View 
+	xmlns:html="http://www.w3.org/1999/xhtml" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:ndc="sap.ndc" 
+	xmlns="sap.m" 
+	controllerName="de.linuxdozent.gittest.adminui.controller.App">
+	<App>
+		<pages>
+			<Page title="{i18n>title}">
+				<headerContent>
+				    <Toolbar>
+				    	<ndc:BarcodeScannerButton 
+				    		text="Scan Discount Code"
+				    		scanSuccess="scanSuccessCallback"
+				    		scanFail="scanFailCallback" />
+				    </Toolbar>
+				</headerContent>
+				<content>
+					<List
+						headerText="Customers"
+						items="{
+							path: '/Customer'
+						}" >
+						<StandardListItem
+							title="{FirstName} {LastName}"
+							description="{UserName}"/>
+					</List>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
