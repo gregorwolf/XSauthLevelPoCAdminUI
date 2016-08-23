@@ -40,12 +40,13 @@ sap.ui.define([
 			if ( oAction === sap.m.MessageBox.Action.OK ) {
 				/** @type sap.m.Input */
 				var oDiscountCode = sap.ui.getCore().byId("discountCodeId");
-				this.discountCode = oDiscountCode.getValue();
-				this._checkDiscountCode(this.discountCode);
+				var discountCode = oDiscountCode.getValue();
+				this._checkDiscountCode(discountCode);
 			}
 		},
 		
 		_checkDiscountCode: function(discountCode) {
+			this.discountCode = discountCode;
 			var checkUrl = "/HANAMDC/de/linuxdozent/gittest/odata/checkDiscountCode.xsjs";
 			/** @type sap.ui.model.odata.ODataModel */
 			this.model = this.getView().getModel();

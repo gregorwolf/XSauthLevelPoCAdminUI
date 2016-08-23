@@ -9,14 +9,14 @@
 			<Page title="{i18n>title}">
 				<headerContent>
 					<Toolbar>
-						<!--
 						<ndc:BarcodeScannerButton 
 							text="Scan Discount Code"
 							scanSuccess="scanSuccessCallback"
 							scanFail="scanFailCallback" />
-						--> 
+						<!--
 						<Button text="Enter Discount Code"
 							press="onEnterDiscountCode" />
+						--> 
 					</Toolbar>
 				</headerContent>
 				<content>
