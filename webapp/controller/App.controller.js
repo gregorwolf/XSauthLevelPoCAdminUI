@@ -40,8 +40,8 @@ sap.ui.define([
 			if ( oAction === sap.m.MessageBox.Action.OK ) {
 				/** @type sap.m.Input */
 				var oDiscountCode = sap.ui.getCore().byId("discountCodeId");
-				var discountCode = oDiscountCode.getValue();
-				this._checkDiscountCode(discountCode);
+				this.discountCode = oDiscountCode.getValue();
+				this._checkDiscountCode(this.discountCode);
 			}
 		},
 		
@@ -65,13 +65,15 @@ sap.ui.define([
 				this.discount = model.getProperty("/OUTC")[0];
 				var sMessage = "The scanned code has a value of " + this.discount.DiscountValue
 							+ " belongs to customer " + this.discount.UserName
-							+ " redemption status " + (this.discount.Redeemed === "Y" ? "not valid" : "is valid")
-							+ " . Do you want to redeem the code now?";
+							+ " redemption status " 
+							+ (this.discount.Redeemed === "Y" ? 
+								  "not valid. You can only cancel this action." 
+								: "is valid. Do you want to redeem the code now?");
 				MessageBox.show(
 					sMessage, {
 						icon: sap.m.MessageBox.Icon.INFORMATION,
 						title: "Discount code content",
-						actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+						actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.CANCEL],
 						onClose: this._messageBoxConfirmed.bind(this)
 					}
 				);
@@ -79,25 +81,25 @@ sap.ui.define([
 		
 		_messageBoxConfirmed: function(oAction) {
 			if(oAction === sap.m.MessageBox.Action.YES){
-				this._redeemDiscountCode().bind(this);
+				this._redeemDiscountCode();
 			} else {
-				this._MessageToast(JSON.stringify("Discount code still valid."));
+				this._MessageToast("Action was canceled.");
 			}
 		},
 		
-		_redeemDiscountCode: function() {
+		_redeemDiscountCode: function(oAction) {
 			var that = this;
+			var oData = {};
+
 			var sPath = "/DiscountCode('" + this.discount.ID + "')";
-			this.model.setProperty(sPath + "/SHA256HASH", this.discount.SHA256HASH);
-			this.model.attachEventOnce("batchRequestCompleted", function(oEvent2) {
-				var oParams = oEvent2.getParameters();
-				if (oParams.success) {
-					that._MessageToast("Discount code was redeemed.");
-				} else {
+			oData.SHA256HASH = this.discountCode;
+
+			this.model.update(sPath, oData, {
+				"success": that._MessageToast("Discount code was redeemed."),
+				"error": function(oError) {
 					that._MessageToast("There was a problem redeeming the discount code");
 				}
 			});
-			this.model.submitChanges();
 		},
 	    
 	    _MessageToast: function(sMessage) {
